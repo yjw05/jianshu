@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { actionCreators } from './store';
+
 import Topic from './components/Topic';
 import List from './components/List';
 import Recommed from './components/Recommed';
 import Writer from './components/Writer';
+
 import {
 	HomeWrapper,
 	HomeLeft,
@@ -28,4 +32,19 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+const mapState = (state) => {
+	return {
+		list: state.getIn(['home', 'topicList'])
+	}
+}
+
+const mapDispatch = (dispatch) => {
+	return {
+		getTopic() {
+			const action = actionCreators.getInitHome();
+			dispatch(action);
+		}
+	}
+}
+
+export default connect(mapState, mapDispatch)(Home);

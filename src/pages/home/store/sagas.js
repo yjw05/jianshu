@@ -1,15 +1,15 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { getTopicList } from './actionCreators';
-import { GET_INIT_TOPIC } from './constants';
+import { getHomeData } from './actionCreators';
+import { GET_INIT_HOME } from './constants';
 import Axios from 'axios';
 
 import './mockdata'
 
-function* getInitTopic() {
+function* getInitHome() {
 	try {
-		const res = yield Axios.get("/api/topicList");
+		const res = yield Axios.get("/api/home");
 		const data = res.data;
-		const action = getTopicList(data.data);
+		const action = getHomeData(data.topicList);
 		yield put(action);
 	} catch (e) {
 		console.log(e);
@@ -17,7 +17,7 @@ function* getInitTopic() {
 }
 
 function* homeSaga() {
-	yield takeEvery(GET_INIT_TOPIC, getInitTopic);
+	yield takeEvery(GET_INIT_HOME, getInitHome);
 }
 
 export default homeSaga;

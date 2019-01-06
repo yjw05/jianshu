@@ -1,11 +1,11 @@
 import * as constants from './constants';
 import { fromJS } from 'immutable';
 
-export const getInitTopic = () => ({
-	type: constants.GET_INIT_TOPIC
+export const getInitHome = () => ({
+	type: constants.GET_INIT_HOME
 });
 
-export const getTopicList = (data) => ({
-	type: constants.GET_TOPIC_LIST,
+export const getHomeData = (data) => ({
+	type: constants.GET_HOME_DATA,
 	data: fromJS(data)
 });

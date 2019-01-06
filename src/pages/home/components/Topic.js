@@ -41,7 +41,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
 		getTopic() {
-			const action = actionCreators.getInitTopic();
+			const action = actionCreators.getInitHome();
 			dispatch(action);
 		}
 	}
