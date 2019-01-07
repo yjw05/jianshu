@@ -1,14 +1,22 @@
-import React, { Component } from 'react';
-import { RecommedWrapper, RecommedItem } from '../style';
+import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+import { RecommedWrapper, RecommedItem } from "../style";
 
-class Recommed extends Component {
-	render() {
-		return (
-			<RecommedWrapper>
-				<RecommedItem imgUrl="http://cdn2.jianshu.io/assets/web/banner-s-3-7123fd94750759acf7eca05b871e9d17.png"></RecommedItem>
-			</RecommedWrapper>
-		)
-	}
+class Recommed extends PureComponent {
+  render() {
+    const { list } = this.props;
+    return list.map(item => {
+      return (
+        <RecommedWrapper key={item.get("id")}>
+          <RecommedItem imgUrl={item.get("imgUrl")} />
+        </RecommedWrapper>
+      );
+    });
+  }
 }
 
-export default Recommed;
+const mapState = state => ({
+  list: state.getIn(["home", "recommendList"])
+});
+
+export default connect(mapState)(Recommed);

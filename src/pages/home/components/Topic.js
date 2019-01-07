@@ -1,51 +1,34 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { actionCreators } from '../store';
-import { TopicWrapper, TopicItem } from '../style';
+import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+import { TopicWrapper, TopicItem } from "../style";
 
-class Topic extends Component {
-	render() {
-		const { list } = this.props;
-		const newList = list.toJS();
-		return (
-			<TopicWrapper>
-				{
-					newList.map((item) => {
-						return (
-							<TopicItem key={item.id}>
-								<img className="topic-pic" src={item.imgUrl} alt={item.title} />
-								{item.title}
-							</TopicItem>
-						)
-					})
-				}
-
-
-			</TopicWrapper>
-		)
-
-
-	}
-
-	componentDidMount() {
-		this.props.getTopic();
-	}
+class Topic extends PureComponent {
+  render() {
+    const { list } = this.props;
+    return (
+      <TopicWrapper>
+        {list.map(item => {
+          return (
+            <TopicItem key={item.get("id")}>
+              <img
+                className="topic-pic"
+                src={item.get("imgUrl")}
+                alt={item.get("title")}
+              />
+              {item.get("title")}
+            </TopicItem>
+          );
+        })}
+      </TopicWrapper>
+    );
+  }
 }
 
-const mapState = (state) => {
-	return {
-		list: state.getIn(['home', 'topicList'])
-	}
-}
+const mapState = state => ({
+  list: state.getIn(["home", "topicList"])
+});
 
-const mapDispatch = (dispatch) => {
-	return {
-		getTopic() {
-			const action = actionCreators.getInitHome();
-			dispatch(action);
-		}
-	}
-
-}
-
-export default connect(mapState, mapDispatch)(Topic);
+export default connect(
+  mapState,
+  null
+)(Topic);

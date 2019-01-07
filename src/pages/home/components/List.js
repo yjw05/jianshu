@@ -1,38 +1,45 @@
-import React, { Component } from 'react';
-import {ListItem,ListInfo } from '../style';
+import React, { PureComponent } from "react";
+import { ListItem, ListInfo, LoadMore } from "../style";
+import { connect } from "react-redux";
+import { actionCreators } from "../store";
+import { Link } from "react-router-dom";
 
-class List extends Component {
-	render() {
-		return (
-			<div>
-				<ListItem>
-				<img className="pic" src="//upload-images.jianshu.io/upload_images/14336331-d1cf0ebc029f59c8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/360/h/240" alt=""/>
-				<ListInfo>
-					<h3 className="title">哪一瞬间让你觉得演员的演技炸裂</h3>
-					<p className="desc">有着“娘娘”称号的孙俪演技不得不让人佩服，尤其哭戏更是吊打圈内的花瓶们，完全展示出一个演员演技的沉淀和积累。 《楚乔传》相信大家一定多多少少了解...</p>
-					 
-				</ListInfo>
-			</ListItem>
-			<ListItem>
-				<img className="pic" src="//upload-images.jianshu.io/upload_images/14336331-d1cf0ebc029f59c8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/360/h/240" alt=""/>
-				<ListInfo>
-					<h3 className="title">哪一瞬间让你觉得演员的演技炸裂</h3>
-					<p className="desc">有着“娘娘”称号的孙俪演技不得不让人佩服，尤其哭戏更是吊打圈内的花瓶们，完全展示出一个演员演技的沉淀和积累。 《楚乔传》相信大家一定多多少少了解...</p>
-					 
-				</ListInfo>
-			</ListItem>
-			<ListItem>
-				<img className="pic" src="//upload-images.jianshu.io/upload_images/14336331-d1cf0ebc029f59c8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/360/h/240" alt=""/>
-				<ListInfo>
-					<h3 className="title">哪一瞬间让你觉得演员的演技炸裂</h3>
-					<p className="desc">有着“娘娘”称号的孙俪演技不得不让人佩服，尤其哭戏更是吊打圈内的花瓶们，完全展示出一个演员演技的沉淀和积累。 《楚乔传》相信大家一定多多少少了解...</p>
-					 
-				</ListInfo>
-			</ListItem>
-			</div>
-			
-		)
-	}
+class List extends PureComponent {
+  render() {
+    const { list, getMoreList, page } = this.props;
+    return (
+      <div>
+        {list.map((item, index) => {
+          return (
+            <Link key={index} to="/detail">
+              <ListItem>
+                <img className="pic" src={item.get("imgUrl")} alt="" />
+                <ListInfo>
+                  <h3 className="title">{item.get("title")}</h3>
+                  <p className="desc">{item.get("desc")}</p>
+                </ListInfo>
+              </ListItem>
+            </Link>
+          );
+        })}
+        <LoadMore onClick={() => getMoreList(page)}>更多</LoadMore>
+      </div>
+    );
+  }
 }
 
-export default List;
+const mapState = state => ({
+  list: state.getIn(["home", "articleList"]),
+  page: state.getIn(["home", "articlePage"])
+});
+
+const mapDispacth = dispacth => ({
+  getMoreList(page) {
+    dispacth(actionCreators.getMoreList(page));
+  }
+});
+
+export default connect(
+  mapState,
+  mapDispacth
+)(List);
